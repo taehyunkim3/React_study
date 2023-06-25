@@ -97,7 +97,7 @@ useEffect(()=>{
 
 
 const [page, setPage] = useState(1);
-const limit = 4;
+const limit = 2;
 const offset = (page-1)*limit;
 
 const postData = (posts)=>{
@@ -113,22 +113,25 @@ console.log(catImage.length)
     <CatListContainer>
         <CatListHeader>
             <h1>CATLIST</h1>
-            <a href="" onClick={()=>{setToggle(!toggle)}}>
+            {/* <a href="" onClick={()=>{setToggle(!toggle)}}>
                 {toggle ? <p>list view공사중</p> : <p>grid view공사중</p> }
-            </a>
+            </a> */}
+                 
         </CatListHeader>
 
 
-        {breeds.map((breed)=>(
-            <CatBreeds key={breed.id} setCurrentBreed={setCurrentBreed} breed={breed}/>   
-        ))}
+
     
         <CarListPhotoWrapper>
             {postData(catImage).map((cat)=>(
                 <CatListComponent key={cat.id} cat={cat} currentBreed={currentBreed}/>  
             ))}        
         </CarListPhotoWrapper>
+       
         <Pagination totalPosts={catImage.length} limit={limit} page={page} setPage={setPage}/>
+        {breeds.map((breed)=>(
+            <CatBreeds key={breed.id} setCurrentBreed={setCurrentBreed} breed={breed}/>   
+        ))}
     </CatListContainer>
   )
 }

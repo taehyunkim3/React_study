@@ -7,15 +7,14 @@ const Button = styled.button`
 margin-top: 0.9em;
 padding: 0.6em 1.5em;
 border-style: solid;
-border-width: 2px;
+border-width: 1px;
 border-color: hsla(0, 0%, 93.3%, 0.2);
 border-radius: 100vw;
 background-color: transparent;
 color: #eee;
-font-size: 0.75rem;
+font-size: 0.4rem;
 line-height: 1.2;
-text-transform: uppercase;
-transition: all .2s;
+transition: all .1s;
 &:hover{
     background-color: white;
     color: black;
