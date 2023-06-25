@@ -2,15 +2,24 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 const Button = styled.button`
-color: white;
-background: none;
-font-size: 30px;
-margin:10px;
+margin-top: 0.9em;
+padding: 0.6em 1.5em;
+border-style: solid;
+border-width: 2px;
+border-color: hsla(0, 0%, 93.3%, 0.2);
+border-radius: 100vw;
+background-color: transparent;
+color: #eee;
+font-size: 0.75rem;
+line-height: 1.2;
+text-transform: uppercase;
+transition: all .2s;
+&:hover{
+    background-color: white;
+    color: black;
+}
 `;
 
-const ButtonWrap = styled.div`
-
-`;
 
 
 const Pagination = ({totalPosts, limit, setPage}) => {

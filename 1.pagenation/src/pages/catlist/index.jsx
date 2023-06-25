@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CatListComponent from "../../components/CatListComponent";
 import Pagination from "../../components/Pagination";
+import CatBreeds from "../../components/CatBreeds";
 
 
 const CatListContainer = styled.div`
@@ -70,18 +71,33 @@ const CatList = () => {
 const [toggle, setToggle] = useState(false);
 const [catImage, setCatImage] = useState([]);
 
+const [breeds, setBreeds] = useState([]);
+const [currentBreed, setCurrentBreed] = useState('beng');
+
+
 
 useEffect(()=>{
-    fetch('https://api.thecatapi.com/v1/images/search?limit=70&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh', {method : "GET"})
+    fetch(`https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`, {method : "GET"})
     .then(res=>res.json())
     .then(res=>{
         setCatImage(res);
     })
+}, [currentBreed]);
+
+
+useEffect(()=>{
+    fetch(`https://api.thecatapi.com/v1/breeds`, {method : "GET"})
+    .then(res=>res.json())
+    .then(res=>{
+       setBreeds(res);
+    })
 }, []);
 
 
+
+
 const [page, setPage] = useState(1);
-const limit = 8;
+const limit = 4;
 const offset = (page-1)*limit;
 
 const postData = (posts)=>{
@@ -91,18 +107,25 @@ const postData = (posts)=>{
     }
 }
 
+
 console.log(catImage.length)
   return (
     <CatListContainer>
         <CatListHeader>
             <h1>CATLIST</h1>
             <a href="" onClick={()=>{setToggle(!toggle)}}>
-                {toggle ? <p>list view</p> : <p>grid view</p> }
+                {toggle ? <p>list view공사중</p> : <p>grid view공사중</p> }
             </a>
         </CatListHeader>
+
+
+        {breeds.map((breed)=>(
+            <CatBreeds key={breed.id} setCurrentBreed={setCurrentBreed} breed={breed}/>   
+        ))}
+    
         <CarListPhotoWrapper>
             {postData(catImage).map((cat)=>(
-                <CatListComponent key={cat.id} cat={cat}/>  
+                <CatListComponent key={cat.id} cat={cat} currentBreed={currentBreed}/>  
             ))}        
         </CarListPhotoWrapper>
         <Pagination totalPosts={catImage.length} limit={limit} page={page} setPage={setPage}/>

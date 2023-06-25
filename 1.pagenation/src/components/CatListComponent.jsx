@@ -95,7 +95,7 @@ const CatListComponent = (source) => {
         </div>
     </CatListItemImage>
     <CatListItemTitle>
-        <p className="item_title">🐱catcatcat</p>
+        <p className="item_title">🐱{source.currentBreed}</p>
         <p className="item_post">post</p>
     </CatListItemTitle>
 
