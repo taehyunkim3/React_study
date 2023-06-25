@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import CatListComponent from "../../components/CatListComponent";
+import Pagination from "../../components/Pagination";
 
 
 const CatListContainer = styled.div`
@@ -15,8 +16,8 @@ padding: 5em 6em;
 `;
 
 const CatListHeader = styled.div`
-padding: 5em 0em;
-display: flex;
+    padding: 5em 0em;
+    display: flex;
     margin-bottom: 3em;
     padding-bottom: 2em;
     -webkit-box-pack: justify;
@@ -71,14 +72,26 @@ const [catImage, setCatImage] = useState([]);
 
 
 useEffect(()=>{
-    fetch('https://api.thecatapi.com/v1/images/search?limit=50&breed_ids=beng&pages=3&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh', {method : "GET"})
+    fetch('https://api.thecatapi.com/v1/images/search?limit=70&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh', {method : "GET"})
     .then(res=>res.json())
     .then(res=>{
-        console.log(1, res);
         setCatImage(res);
     })
 }, []);
 
+
+const [page, setPage] = useState(1);
+const limit = 8;
+const offset = (page-1)*limit;
+
+const postData = (posts)=>{
+    if(posts){
+        let result = posts.slice(offset, offset+limit);
+        return result;
+    }
+}
+
+console.log(catImage.length)
   return (
     <CatListContainer>
         <CatListHeader>
@@ -88,12 +101,11 @@ useEffect(()=>{
             </a>
         </CatListHeader>
         <CarListPhotoWrapper>
-            {catImage.map((cat)=>(
+            {postData(catImage).map((cat)=>(
                 <CatListComponent key={cat.id} cat={cat}/>  
-            ))}
-            
-                       
+            ))}        
         </CarListPhotoWrapper>
+        <Pagination totalPosts={catImage.length} limit={limit} page={page} setPage={setPage}/>
     </CatListContainer>
   )
 }

@@ -9,7 +9,7 @@ display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
 
-    width : 48%;
+    width : 48.5%;
    
     flex-direction: column;
     -webkit-box-pack: start;
@@ -86,7 +86,7 @@ translate: none;
 
 const CatListComponent = (source) => {
 
-    console.log(source.cat);
+
   return (
     <CatListItem>
     <CatListItemImage>
