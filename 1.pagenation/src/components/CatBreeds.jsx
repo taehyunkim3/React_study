@@ -37,7 +37,6 @@ const CatBreeds = ({breed, setCurrentBreed}) => {
 
 
 CatBreeds.propTypes = {
-    totalBreeds: PropTypes.number.isRequired,
     breed: PropTypes.object.isRequired,
     setCurrentBreed: PropTypes.func.isRequired,
   };

@@ -74,14 +74,38 @@ const [catImage, setCatImage] = useState([]);
 const [breeds, setBreeds] = useState([]);
 const [currentBreed, setCurrentBreed] = useState('beng');
 
+const [loading, setLoading] = useState(true);
+const [error, setError] = useState('');
+
+// useEffect(()=>{
+//     const fetchCatList = async ()=>{
+//         setLoading(true);
+//         // console.log(true);
+//             fetch(`https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`, {method : "GET"})
+//             .then(res=>res.json())
+//             .then(res=>{
+//                 setCatImage(res);
+//                 setLoading(false)
+//             })
+//             .catch(res=>
+//                 setError(res)
+//             ).finally(
+//                 // setLoading(false)
+//             )
+//     }
+//     fetchCatList();
+// }, [currentBreed])
 
 
 useEffect(()=>{
+    setLoading(true);
     fetch(`https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`, {method : "GET"})
     .then(res=>res.json())
     .then(res=>{
         setCatImage(res);
-    })
+        setLoading(false)
+    }).catch(res=>
+        setError(res))
 }, [currentBreed]);
 
 
@@ -123,9 +147,13 @@ console.log(catImage.length)
 
     
         <CarListPhotoWrapper>
-            {postData(catImage).map((cat)=>(
+
+            {loading 
+            ? <CatListHeader><h1>loading</h1></CatListHeader> 
+            :          (postData(catImage).map((cat)=>(
                 <CatListComponent key={cat.id} cat={cat} currentBreed={currentBreed}/>  
-            ))}        
+            )))    }
+       
         </CarListPhotoWrapper>
        
         <Pagination totalPosts={catImage.length} limit={limit} page={page} setPage={setPage}/>
