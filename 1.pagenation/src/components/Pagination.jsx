@@ -25,12 +25,9 @@ transition: all .2s;
 const Pagination = ({totalPosts, limit, setPage}) => {
 const numPages = Math.ceil(totalPosts/ limit)
 
-console.log('numPAGE :'+numPages)
-
   return (
     <div>
         {Array.from({length: numPages}).map((_,i) => {
-            console.log(i+' : return index')
             return (
                 <Button key={i+1} onClick={()=>setPage(i+1)}>
                     {i+1}
