@@ -3,6 +3,7 @@ import styled from "styled-components";
 import CatListComponent from "../../components/CatListComponent";
 import Pagination from "../../components/Pagination";
 import CatBreeds from "../../components/CatBreeds";
+import CatLoading from "../../components/CatLoading";
 
 
 const CatListContainer = styled.div`
@@ -77,6 +78,7 @@ const [currentBreed, setCurrentBreed] = useState('beng');
 const [loading, setLoading] = useState(true);
 const [error, setError] = useState('');
 
+
 // useEffect(()=>{
 //     const fetchCatList = async ()=>{
 //         setLoading(true);
@@ -149,7 +151,7 @@ console.log(catImage.length)
         <CarListPhotoWrapper>
 
             {loading 
-            ? <CatListHeader><h1>loading</h1></CatListHeader> 
+            ? <CatLoading></CatLoading>
             :          (postData(catImage).map((cat)=>(
                 <CatListComponent key={cat.id} cat={cat} currentBreed={currentBreed}/>  
             )))    }

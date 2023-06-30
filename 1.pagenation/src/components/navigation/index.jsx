@@ -9,6 +9,7 @@ const Nav = ()=>{
     return (
       <Routes>
         <Route path='/' element={<Layout/>}>
+        {/* <Route path=":page" element={<CatList />} /> */}
           <Route index element={<CatList/>}/>
         </Route>
       </Routes>
