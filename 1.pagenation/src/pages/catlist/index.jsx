@@ -3,18 +3,16 @@ import styled from "styled-components";
 import CatListComponent from "../../components/CatListComponent";
 import Pagination from "../../components/Pagination";
 import CatBreeds from "../../components/CatBreeds";
-import CatLoading from "../../components/CatLoading";
-
 
 const CatListContainer = styled.div`
-min-height: 100vh;
-padding-top: 11em;
-padding-bottom: 11em;
-width: 100%;
-max-width: 100em;
-margin-right: auto;
-margin-left: auto;
-padding: 5em 6em;
+  min-height: 100vh;
+  padding-top: 11em;
+  padding-bottom: 11em;
+  width: 100%;
+  max-width: 100em;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 5em 6em;
 `;
 
 const CatListHeader = styled.div`
@@ -69,101 +67,108 @@ const CarListPhotoWrapper = styled.div`
 `;
 
 const CatList = () => {
-const [toggle, setToggle] = useState(false);
-const [catImage, setCatImage] = useState([]);
+  const [toggle, setToggle] = useState(false);
+  const [catImage, setCatImage] = useState([]);
 
-const [breeds, setBreeds] = useState([]);
-const [currentBreed, setCurrentBreed] = useState('beng');
+  const [breeds, setBreeds] = useState([]);
+  const [currentBreed, setCurrentBreed] = useState("beng");
 
-const [loading, setLoading] = useState(true);
-const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
+  // useEffect(()=>{
+  //     const fetchCatList = async ()=>{
+  //         setLoading(true);
+  //         // console.log(true);
+  //             fetch(`https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`, {method : "GET"})
+  //             .then(res=>res.json())
+  //             .then(res=>{
+  //                 setCatImage(res);
+  //                 setLoading(false)
+  //             })
+  //             .catch(res=>
+  //                 setError(res)
+  //             ).finally(
+  //                 // setLoading(false)
+  //             )
+  //     }
+  //     fetchCatList();
+  // }, [currentBreed])
 
-// useEffect(()=>{
-//     const fetchCatList = async ()=>{
-//         setLoading(true);
-//         // console.log(true);
-//             fetch(`https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`, {method : "GET"})
-//             .then(res=>res.json())
-//             .then(res=>{
-//                 setCatImage(res);
-//                 setLoading(false)
-//             })
-//             .catch(res=>
-//                 setError(res)
-//             ).finally(
-//                 // setLoading(false)
-//             )
-//     }
-//     fetchCatList();
-// }, [currentBreed])
-
-
-useEffect(()=>{
+  useEffect(() => {
     setLoading(true);
-    fetch(`https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`, {method : "GET"})
-    .then(res=>res.json())
-    .then(res=>{
+    fetch(
+      `https://api.thecatapi.com/v1/images/search?limit=70&breed_ids=${currentBreed}&order=RAND&api_key=live_azQcADuBx09SzH1CxC1xsjGcXZgl056pvXUSfbA4IMmTe2oG0qmSVWhujRGEADZh`,
+      { method: "GET" }
+    )
+      .then((res) => res.json())
+      .then((res) => {
         setCatImage(res);
-        setLoading(false)
-    }).catch(res=>
-        setError(res))
-}, [currentBreed]);
+        setLoading(false);
+      })
+      .catch((res) => setError(res));
+  }, [currentBreed]);
 
+  useEffect(() => {
+    fetch(`https://api.thecatapi.com/v1/breeds`, { method: "GET" })
+      .then((res) => res.json())
+      .then((res) => {
+        setBreeds(res);
+      });
+  }, []);
 
-useEffect(()=>{
-    fetch(`https://api.thecatapi.com/v1/breeds`, {method : "GET"})
-    .then(res=>res.json())
-    .then(res=>{
-       setBreeds(res);
-    })
-}, []);
+  const [page, setPage] = useState(1);
+  const limit = 2;
+  const offset = (page - 1) * limit;
 
-
-
-
-const [page, setPage] = useState(1);
-const limit = 2;
-const offset = (page-1)*limit;
-
-const postData = (posts)=>{
-    if(posts){
-        let result = posts.slice(offset, offset+limit);
-        return result;
+  const postData = (posts) => {
+    if (posts) {
+      let result = posts.slice(offset, offset + limit);
+      return result;
     }
-}
+  };
 
-
-console.log(catImage.length)
+  console.log(catImage.length);
   return (
     <CatListContainer>
-        <CatListHeader>
-            <h1>CATLIST</h1>
-            {/* <a href="" onClick={()=>{setToggle(!toggle)}}>
+      <CatListHeader>
+        <h1>CATLIST</h1>
+        {/* <a href="" onClick={()=>{setToggle(!toggle)}}>
                 {toggle ? <p>list view공사중</p> : <p>grid view공사중</p> }
             </a> */}
-                 
-        </CatListHeader>
+      </CatListHeader>
 
+      <CarListPhotoWrapper>
+        {loading ? (
+          <CatListHeader>
+            <h1>loading</h1>
+          </CatListHeader>
+        ) : (
+          postData(catImage).map((cat) => (
+            <CatListComponent
+              key={cat.id}
+              cat={cat}
+              currentBreed={currentBreed}
+            />
+          ))
+        )}
+      </CarListPhotoWrapper>
 
-
-    
-        <CarListPhotoWrapper>
-
-            {loading 
-            ? <CatLoading></CatLoading>
-            :          (postData(catImage).map((cat)=>(
-                <CatListComponent key={cat.id} cat={cat} currentBreed={currentBreed}/>  
-            )))    }
-       
-        </CarListPhotoWrapper>
-       
-        <Pagination totalPosts={catImage.length} limit={limit} page={page} setPage={setPage}/>
-        {breeds.map((breed)=>(
-            <CatBreeds key={breed.id} setCurrentBreed={setCurrentBreed} breed={breed}/>   
-        ))}
+      <Pagination
+        totalPosts={catImage.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
+      {breeds.map((breed) => (
+        <CatBreeds
+          key={breed.id}
+          setCurrentBreed={setCurrentBreed}
+          breed={breed}
+        />
+      ))}
     </CatListContainer>
-  )
-}
+  );
+};
 
-export default CatList
+export default CatList;
